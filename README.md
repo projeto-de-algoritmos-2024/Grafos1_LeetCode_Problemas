@@ -20,7 +20,7 @@ Os exercícios abordados são os seguintes
 | 329. | [Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/description/) | Difícil |
 | 2608. | [Shortest Cycle in a Graph](https://leetcode.com/problems/shortest-cycle-in-a-graph/description/) | Difícil |
 | 785. | [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/description/) | Médio |
-
+| 133. | [Clone Graph](https://leetcode.com/problems/clone-graph/description/)| Médio |
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
