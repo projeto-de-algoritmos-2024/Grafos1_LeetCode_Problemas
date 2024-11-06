@@ -19,7 +19,7 @@
 ### Exemplo 1:
 
 <div style="text-align: center;">
-    <img src="imagens/2608graph1.png" alt="grafo1" style="max-width: 30%; height: auto;">
+    <img src="../imagens/2608graph1.png" alt="grafo1" style="max-width: 30%; height: auto;">
 </div>
 </br>
 
@@ -39,7 +39,7 @@ Explicação:
 ### Exemplo 2:
 
 <div style="text-align: center;">
-    <img src="imagens/2608graph2.png" alt="grafo2" style="max-width: 30%; height: auto;">
+    <img src="../imagens/2608graph2.png" alt="grafo2" style="max-width: 30%; height: auto;">
 </div>
 </br>
 
