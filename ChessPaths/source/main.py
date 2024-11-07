@@ -30,7 +30,7 @@ cap_pretas = []
 
 turn_step = 0
 
-peca_selecionada = -1
+peca_selecionada = 10
 
 movimentos_validos = []
 
@@ -55,7 +55,7 @@ torre_preta   = pygame.transform.scale(torre_preta, (80, 80))
 torre_preta_p = pygame.transform.scale(torre_preta, (45, 45))
 
 peao_preto   = pygame.image.load('../assets/pieces/peao_preto.png')
-peao_preto   = pygame.transform.scale(peao_preto, (80, 80))
+peao_preto   = pygame.transform.scale(peao_preto, (65, 65))
 peao_preto_p = pygame.transform.scale(peao_preto, (45, 45))
 
 rei_branco   = pygame.image.load('../assets/pieces/rei_branco.png')
@@ -79,7 +79,7 @@ torre_branca   = pygame.transform.scale(torre_branca, (80, 80))
 torre_branca_p = pygame.transform.scale(torre_branca, (45, 45))
 
 peao_branco   = pygame.image.load('../assets/pieces/peao_branco.png')
-peao_branco   = pygame.transform.scale(peao_branco, (80, 80))
+peao_branco   = pygame.transform.scale(peao_branco, (65, 65))
 peao_branco_p = pygame.transform.scale(peao_branco, (45, 45))
 
 imagens_brancas = [peao_branco, torre_branca, cavalo_branco, bispo_branco, dama_branca, rei_branco, bispo_branco, cavalo_branco, torre_branca]
@@ -94,14 +94,14 @@ lista_pecas = ['peao', 'torre', 'cavalo', 'bispo', 'dama', 'rei']
 
 # FUNÇÕES
 def desenharTabuleiro():
-    pygame.draw.rect(tela, 'gray3', [0, 0, 800, 800])
+    pygame.draw.rect(tela, 'purple4', [0, 0, 800, 800])
     for i in range(32):
         coluna = i%4
         linha = i//4
         if linha%2 == 0:
-            pygame.draw.rect(tela, 'lightskyblue1', [600 - (coluna*200), linha * 100, 100, 100])
+            pygame.draw.rect(tela, 'light grey', [600 - (coluna*200), linha * 100, 100, 100])
         else:
-            pygame.draw.rect(tela, 'lightskyblue1', [700 - (coluna*200), linha * 100, 100, 100])
+            pygame.draw.rect(tela, 'light grey', [700 - (coluna*200), linha * 100, 100, 100])
         pygame.draw.rect(tela, 'black', [0, 800, 800, 100])
         pygame.draw.rect(tela, 'black', [0, 800, LARGURA_TELA, 100], 5)
         pygame.draw.rect(tela, 'black', [800, 0, 200, ALTURA_TELA], 5)
@@ -111,6 +111,27 @@ def desenharTabuleiro():
         
         tela.blit(fonte_grande.render(textos_turn_step[turn_step], True, 'lightskyblue2'), (10, 810))
 
+def desenharPecas():
+    for i in range(len(pecas_brancas)):
+        index = lista_pecas.index(pecas_brancas[i])
+        if pecas_brancas[i] == 'peao':
+            tela.blit(peao_branco, (loc_brancas[i][0]*100+19, loc_brancas[i][1]*100+30))
+        else:
+            tela.blit(imagens_brancas[index], (loc_brancas[i][0]*100+10, loc_brancas[i][1]*100+10))
+        if turn_step < 2:
+            if peca_selecionada == i:
+                pygame.draw.rect(tela, 'violetred', [loc_brancas[i][0]*100+1, loc_brancas[i][1]*100+1, 100, 100], 5)
+
+
+    for i in range(len(pecas_pretas)):
+        index = lista_pecas.index(pecas_pretas[i])
+        if pecas_pretas[i] == 'peao':
+            tela.blit(peao_preto, (loc_pretas[i][0]*100+19, loc_pretas[i][1]*100+30))
+        else:
+            tela.blit(imagens_pretas[index], (loc_pretas[i][0]*100+10, loc_pretas[i][1]*100+10))
+        if turn_step >= 2:
+            if peca_selecionada == i:
+                pygame.draw.rect(tela, 'violetred', [loc_pretas[i][0]*100+1, loc_pretas[i][1]*100+1, 100, 100], 5)
 
 # GAME LOOP
 run = True
@@ -118,6 +139,7 @@ while run:
     timer.tick(fps)
     tela.fill('dark gray')
     desenharTabuleiro()
+    desenharPecas()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
