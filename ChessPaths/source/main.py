@@ -6,8 +6,8 @@ pygame.display.set_caption("ChessPaths")
 LARGURA_TELA = 1000
 ALTURA_TELA = 900
 tela = pygame.display.set_mode([LARGURA_TELA, ALTURA_TELA])
-fonte = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 20)
-fonte_grande = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 50)
+fonte = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 10)
+fonte_grande = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 25)
 timer = pygame.time.Clock()
 fps = 60
 
@@ -92,11 +92,32 @@ imagens_pretas_p = [peao_preto_p, torre_preta_p, cavalo_preto_p, bispo_preto_p, 
 
 lista_pecas = ['peao', 'torre', 'cavalo', 'bispo', 'dama', 'rei']
 
+# FUNÇÕES
+def desenharTabuleiro():
+    pygame.draw.rect(tela, 'gray3', [0, 0, 800, 800])
+    for i in range(32):
+        coluna = i%4
+        linha = i//4
+        if linha%2 == 0:
+            pygame.draw.rect(tela, 'lightskyblue1', [600 - (coluna*200), linha * 100, 100, 100])
+        else:
+            pygame.draw.rect(tela, 'lightskyblue1', [700 - (coluna*200), linha * 100, 100, 100])
+        pygame.draw.rect(tela, 'black', [0, 800, 800, 100])
+        pygame.draw.rect(tela, 'black', [0, 800, LARGURA_TELA, 100], 5)
+        pygame.draw.rect(tela, 'black', [800, 0, 200, ALTURA_TELA], 5)
+
+        textos_turn_step = ['Brancas: Selecione uma peça', 'Brancas: Selecione uma destino',
+                            'Pretas: Selecione uma peça', 'Pretas: Selecione um destino']
+        
+        tela.blit(fonte_grande.render(textos_turn_step[turn_step], True, 'lightskyblue2'), (10, 810))
+
+
 # GAME LOOP
 run = True
 while run:
     timer.tick(fps)
     tela.fill('dark gray')
+    desenharTabuleiro()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
