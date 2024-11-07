@@ -91,7 +91,7 @@ Feita a cópia do grafo original, definiu-se um inteiro para armazenar o menor c
 int tamanhoMenorCiclo = INT_MAX;
 ```
 
-Em seguida, é feita uma busca em largura adaptada que retorna o tamanho do menor ciclo do qual um vértice faz parte. Como essa busca é feita para cada nó, garante-se que a busca vai encontrar pelo menos o menor ciclo do qual cada nó é integrante. A busca em largura (BFS) foi escolhida pois, como ela percorre o grafo em camadas, fica mais fácil encontrar mais rápido o menor ciclo que um vértice faz parte. Realizada a busca, é feita a verificação se o menor ci
+Em seguida, é feita uma busca em largura adaptada que retorna o tamanho do menor ciclo do qual um vértice faz parte. Como essa busca é feita para cada nó, garante-se que a busca vai encontrar pelo menos o menor ciclo do qual cada nó é integrante. A busca em largura (BFS) foi escolhida pois, como ela percorre o grafo em camadas, fica mais fácil encontrar mais rápido o menor ciclo que um vértice faz parte. Realizada a busca, é feita a verificação se o menor ciclo do qual um nó faz parte é menor que o menor ciclo encontrado até então.
 
 ```
 for(int v = 0; v < n; v++){
