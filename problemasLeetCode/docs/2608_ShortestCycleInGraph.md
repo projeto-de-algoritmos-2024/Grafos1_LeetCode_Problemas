@@ -52,7 +52,7 @@ Saída:
 **-1**
 
 Explicação:
-> - O grafo não contem ciclos.
+> - O grafo não contém ciclos.
 
 ## Solução proposta:
 
@@ -71,12 +71,7 @@ Ou seja, ele requer uma classe "solução", a qual contenha uma função públic
 
 A primeira coisa a fazer é montar um grafo a partir da matriz de adjacências recebida, fazer isso é conveniente para não impactar em nada a matriz original. Para isso foi utilizada a função **vector<vector<int>> copiaGrafo(int nVertices, const vector<vector<int>>& matrizAdj)**:
 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+</br></br></br></br></br></br>
 
 ```    
 vector<vector<int>> copiaGrafo(int nVertices, const vector<vector<int>>& matrizAdj){
