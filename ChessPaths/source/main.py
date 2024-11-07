@@ -1,5 +1,39 @@
 import pygame
 
+# CONFIGURAÇÕES DA TELA
+pygame.init()
+pygame.display.set_caption("ChessPaths")
+LARGURA_TELA = 1000
+ALTURA_TELA = 900
+tela = pygame.display.set_mode([LARGURA_TELA, ALTURA_TELA])
+fonte = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 20)
+fonte_grande = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 50)
+timer = pygame.time.Clock()
+fps = 60
+
+# CONFIGURAÇÕES DO JOGO
+pecas_brancas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
+                 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
+
+pecas_pretas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
+                'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
+
+loc_brancas = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
+               (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
+
+loc_pretas = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
+              (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
+
+cap_brancas = []
+
+cap_pretas = []
+
+turn_step = 0
+
+peca_selecionada = -1
+
+movimentos_validos = []
+
 rei_preto   = pygame.image.load('../assets/pieces/rei_preto.png')
 rei_preto   = pygame.transform.scale(rei_preto, (80, 80))
 rei_preto_p = pygame.transform.scale(rei_preto, (45, 45))
@@ -48,18 +82,17 @@ peao_branco   = pygame.image.load('../assets/pieces/peao_branco.png')
 peao_branco   = pygame.transform.scale(peao_branco, (80, 80))
 peao_branco_p = pygame.transform.scale(peao_branco, (45, 45))
 
-pygame.init()
-pygame.display.set_caption("ChessPaths")
-LARGURA_TELA = 1000
-ALTURA_TELA = 900
-tela = pygame.display.set_mode([LARGURA_TELA, ALTURA_TELA])
-fonte = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 20)
-fonte_grande = pygame.font.Font('../assets/fonts/Monocraft-nerd-fonts-patched.ttf', 50)
-timer = pygame.time.Clock()
-fps = 60
+imagens_brancas = [peao_branco, torre_branca, cavalo_branco, bispo_branco, dama_branca, rei_branco, bispo_branco, cavalo_branco, torre_branca]
+
+imagens_pretas = [peao_preto, torre_preta, cavalo_preto, bispo_preto, dama_preta, rei_preto, bispo_preto, cavalo_preto, torre_preta]
+
+imagens_brancas_p = [peao_branco_p, torre_branca_p, cavalo_branco_p, bispo_branco_p, dama_branca_p, rei_branco_p, bispo_branco_p, cavalo_branco_p, torre_branca_p]
+
+imagens_pretas_p = [peao_preto_p, torre_preta_p, cavalo_preto_p, bispo_preto_p, dama_preta_p, rei_preto_p, bispo_preto_p, cavalo_preto_p, torre_preta_p]
+
+lista_pecas = ['peao', 'torre', 'cavalo', 'bispo', 'dama', 'rei']
 
 # GAME LOOP
-
 run = True
 while run:
     timer.tick(fps)
