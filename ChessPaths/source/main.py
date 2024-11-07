@@ -106,7 +106,7 @@ def desenharTabuleiro():
         pygame.draw.rect(tela, 'black', [0, 800, LARGURA_TELA, 100], 5)
         pygame.draw.rect(tela, 'black', [800, 0, 200, ALTURA_TELA], 5)
 
-        textos_turn_step = ['Brancas: Selecione uma peça', 'Brancas: Selecione uma destino',
+        textos_turn_step = ['Brancas: Selecione uma peça', 'Brancas: Selecione um destino',
                             'Pretas: Selecione uma peça', 'Pretas: Selecione um destino']
         
         tela.blit(fonte_grande.render(textos_turn_step[turn_step], True, 'lightskyblue2'), (10, 810))
@@ -120,7 +120,7 @@ def desenharPecas():
             tela.blit(imagens_brancas[index], (loc_brancas[i][0]*100+10, loc_brancas[i][1]*100+10))
         if turn_step < 2:
             if peca_selecionada == i:
-                pygame.draw.rect(tela, 'violetred', [loc_brancas[i][0]*100+1, loc_brancas[i][1]*100+1, 100, 100], 5)
+                pygame.draw.rect(tela, 'violetred', [loc_brancas[i][0]*100, loc_brancas[i][1]*100, 100, 100], 5)
 
 
     for i in range(len(pecas_pretas)):
@@ -131,7 +131,10 @@ def desenharPecas():
             tela.blit(imagens_pretas[index], (loc_pretas[i][0]*100+10, loc_pretas[i][1]*100+10))
         if turn_step >= 2:
             if peca_selecionada == i:
-                pygame.draw.rect(tela, 'violetred', [loc_pretas[i][0]*100+1, loc_pretas[i][1]*100+1, 100, 100], 5)
+                pygame.draw.rect(tela, 'violetred', [loc_pretas[i][0]*100, loc_pretas[i][1]*100, 100, 100], 5)
+
+def checkOp():
+    pass
 
 # GAME LOOP
 run = True
@@ -144,6 +147,46 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            x_coord = event.pos[0] // 100
+            y_coord = event.pos[1] // 100
+            click_coord = (x_coord, y_coord)
+
+            if turn_step < 2:
+                if click_coord in loc_brancas:
+                    peca_selecionada = loc_brancas.index(click_coord)
+                    if turn_step == 0:
+                        turn_step = 1
+                if click_coord in movimentos_validos and peca_selecionada != -1:
+                    loc_brancas[peca_selecionada] = click_coord
+                    if click_coord in loc_pretas:
+                        peca_preta = loc_pretas.index(click_coord)
+                        cap_brancas.append(pecas_pretas[peca_preta])
+                        pecas_pretas.pop(peca_preta)
+                        loc_pretas.pop(peca_preta)
+                    op_brancas = checkOp(pecas_pretas, loc_pretas, 'p')
+                    op_pretas = checkOp(pecas_brancas, loc_brancas, 'b')
+                    turn_step = 2
+                    peca_selecionada = -1
+                    movimentos_validos = []
+            if turn_step >= 2:
+                if click_coord in loc_pretas:
+                    peca_selecionada = loc_pretas.index(click_coord)
+                    if turn_step == 2:
+                        turn_step = 3
+                if click_coord in movimentos_validos and peca_selecionada != -1:
+                    loc_pretas[peca_selecionada] = click_coord
+                    if click_coord in loc_brancas:
+                        pecas_brancas = loc_brancas.index(click_coord)
+                        cap_pretas.append(pecas_brancas[pecas_brancas])
+                        pecas_brancas.pop(pecas_brancas)
+                        loc_brancas.pop(pecas_brancas)
+                    op_pretas = checkOp(pecas_brancas, loc_brancas, 'b')
+                    op_brancas = checkOp(pecas_pretas, loc_pretas, 'p')
+                    turn_step = 0
+                    peca_selecionada = -1
+                    movimentos_validos = []
+
 
     pygame.display.flip()
 pygame.quit()
