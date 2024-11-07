@@ -26,6 +26,8 @@ class Node {
 - Não existem arestas repetidas nem arestas de um vértice para si mesmo (self-loops)
 - O grafo é conectado e todos os nós pode ser visitados a partir de qualquer nó
 
+</br></br></br></br></br></br></br></br></br></br></br></br>
+
 ## Exemplos:
 
 ### Exemplo 1:
@@ -84,3 +86,73 @@ Explicação:
 > - O grafo não contém nós.
 
 ## Solução proposta:
+
+Para soluções em C, o LeetCode oferece o seguinte ponto de partida:
+
+```
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numNeighbors;
+ *     struct Node** neighbors;
+ * };
+ */
+
+struct Node *cloneGraph(struct Node *s) {
+	
+}
+```
+
+Para melhor compreensão, os nomes da struct e de suas variáveis foram alterados para português. Em seguida, as bibliotecas **stdio.h** e **stdlib.h** foram importadas e definiu-se um valor para especificar o maior número de nós especificados pelo problema:
+
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_NODES 101
+
+typedef struct Vertice{
+    int valor;
+    int qtdVizinhos;
+    struct Vertice** vizinhos;
+} Vertice;
+```
+
+A função **cloneGraph(Vertice* vertice)** foi usada para resolver o problema, nela é vericado se o grafo é vazio, nesse caso retornando **NULL**. Caso contrário, é realizada uma busca em largura adaptada para clonar o grafo enquanto o percorre através do vértice inicial. Por fim, a busca retorna o vértice clonado já ligado aos clones dos outros vértices, ou seja, um clone do grafo original:
+
+```
+Vertice* BFSclona(Vertice* vertice){
+    Vertice* verticesVisitados[MAX_NODES] = { NULL };
+    
+    Vertice* fila[MAX_NODES];
+    int front = 0, back = 0;
+
+    //Clona o nó inicial
+    Vertice* cloneVertice = criaVertice(vertice->valor);
+    verticesVisitados[vertice->valor] = cloneVertice;
+    fila[back++] = vertice;
+
+    // Enquanto a fila não está vazia
+    while(front < back){
+        Vertice* verticeAtual = fila[front++]; //Desenfilera primeiro vértice na fila
+        Vertice* cloneVerticeAtual = verticesVisitados[verticeAtual->valor]; //Clona verticeAtual
+
+        //Passa por todos os vizinhos de verticeAtual
+        for(int i = 0; i < verticeAtual->qtdVizinhos; i++){
+            Vertice* vizinho = verticeAtual->vizinhos[i];
+
+            //Se o vizinho ainda não foi visitado, ele é clonado
+            if(!verticesVisitados[vizinho->valor]){
+                verticesVisitados[vizinho->valor] = criaVertice(vizinho->valor);
+                fila[back++] = vizinho;
+            }
+            //Adiciona  a aresta
+            cloneVerticeAtual->vizinhos[cloneVerticeAtual->qtdVizinhos++] = verticesVisitados[vizinho->valor];
+        }
+    }
+    return cloneVertice;
+}
+
+Vertice* cloneGraph(Vertice* vertice){ return !vertice ? NULL : BFSclona(vertice); }
+```
