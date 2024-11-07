@@ -73,6 +73,8 @@ Para este exercício, a dupla decidiu usar a linguagem C++
 
 Para soluções em C++, o LeetCode oferece o seguinte ponto de partida:
 
+</br></br></br></br></br></br>
+
 ```
 class Solution {
 public:
