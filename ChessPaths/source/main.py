@@ -151,8 +151,8 @@ def checkOp(pecas, locs, vez):
         #     lista_movimentos = movimentoTorre(loc, vez)
         elif peca == 'cavalo':
             lista_movimentos = movimentoCavalo(loc, vez)
-        # elif peca == 'bispo':
-        #     lista_movimentos = movimentoBispo(loc, vez)
+        elif peca == 'bispo':
+            lista_movimentos = movimentoBispo(loc, vez)
         # elif peca == 'dama':
         #     lista_movimentos = movimentoDama(loc, vez)
         # elif peca == 'rei':
@@ -201,6 +201,42 @@ def movimentoCavalo(posicao, vez):
 
     return lista_movimentos
 
+def movimentoBispo(posicao, vez):
+    lista_movimentos = []
+    if vez == 'b':
+        lista_inimigos = loc_pretas
+        lista_aliados = loc_brancas
+    else:
+        lista_inimigos = loc_brancas
+        lista_aliados = loc_pretas
+    
+    for i in range(4):
+        passagem_liberada = True
+        cadeia = 1
+        if i == 0:
+            x = 1
+            y = -1
+        elif i == 1:
+            x = -1
+            y = -1
+        elif i == 2:
+            x = 1
+            y = 1
+        else:
+            x = -1
+            y = 1
+        
+        while passagem_liberada:
+            if (posicao[0] + (cadeia * x), posicao[1] + (cadeia * y)) not in lista_aliados and 0 <= posicao[0] + (cadeia * x) <= 7 and 0 <= posicao[1] + (cadeia * y) <= 7:
+                lista_movimentos.append((posicao[0] + (cadeia * x), posicao[1] + (cadeia * y)))
+                if (posicao[0] + (cadeia * x), posicao[1] + (cadeia * y)) in lista_inimigos:
+                    passagem_liberada = False
+                cadeia += 1
+            else:
+                passagem_liberada = False
+    
+    return lista_movimentos
+
 def movimentosValidos():
     if turn_step < 2:
         opcoes = op_brancas
@@ -211,7 +247,7 @@ def movimentosValidos():
 
 def desenharMovimentosValidos(movimentos):
     for i in range(len(movimentos)):
-        pygame.draw.rect(tela, 'gray4', pygame.Rect(movimentos[i][0] * 100 + 40, movimentos[i][1] * 100 + 40, 20, 20)
+        pygame.draw.rect(tela, 'violetred', pygame.Rect(movimentos[i][0] * 100 + 40, movimentos[i][1] * 100 + 40, 20, 20)
 )
 
 # GAME LOOP
