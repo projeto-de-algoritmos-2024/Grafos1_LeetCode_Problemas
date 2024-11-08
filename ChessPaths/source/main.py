@@ -116,7 +116,6 @@ def desenharTabuleiro():
         elif turn_step == 3:
             tela.blit(fonte_grande.render(pecas_pretas[peca_selecionada], True, 'lightskyblue2'), (10, 840))
 
-
 def desenharPecas():
     for i in range(len(pecas_brancas)):
         index = lista_pecas.index(pecas_brancas[i])
@@ -150,8 +149,8 @@ def checkOp(pecas, locs, vez):
             lista_movimentos = movimentoPeao(loc, vez)
         # elif peca == 'torre':
         #     lista_movimentos = movimentoTorre(loc, vez)
-        # elif peca == 'cavalo':
-        #     lista_movimentos = movimentoCavalo(loc, vez)
+        elif peca == 'cavalo':
+            lista_movimentos = movimentoCavalo(loc, vez)
         # elif peca == 'bispo':
         #     lista_movimentos = movimentoBispo(loc, vez)
         # elif peca == 'dama':
@@ -185,6 +184,23 @@ def movimentoPeao(posicao, vez):
     
     return lista_movimentos
 
+def movimentoCavalo(posicao, vez):
+    lista_movimentos = []
+    if vez == 'b':
+        lista_inimigos = loc_pretas
+        lista_aliados = loc_brancas
+    else:
+        lista_inimigos = loc_brancas
+        lista_aliados = loc_pretas
+
+    casas_possiveis = [(1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1)]
+    for i in range(8):
+        target = (posicao[0] + casas_possiveis[i][0], posicao[1] + casas_possiveis[i][1])
+        if target not in lista_aliados and 0 <= target[0] <= 7 and 0 <= target[1] <= 7:
+            lista_movimentos.append(target)
+
+    return lista_movimentos
+
 def movimentosValidos():
     if turn_step < 2:
         opcoes = op_brancas
@@ -195,8 +211,8 @@ def movimentosValidos():
 
 def desenharMovimentosValidos(movimentos):
     for i in range(len(movimentos)):
-        pygame.draw.circle(tela, 'blue', (movimentos[i][0] * 100 + 50, movimentos[i][1] * 100 + 50), 5)
-
+        pygame.draw.rect(tela, 'gray4', pygame.Rect(movimentos[i][0] * 100 + 40, movimentos[i][1] * 100 + 40, 20, 20)
+)
 
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
