@@ -153,8 +153,8 @@ def checkOp(pecas, locs, vez):
             lista_movimentos = movimentoBispo(loc, vez)
         elif peca == 'torre':
             lista_movimentos = movimentoTorre(loc, vez)
-        # elif peca == 'dama':
-        #     lista_movimentos = movimentoDama(loc, vez)
+        elif peca == 'dama':
+            lista_movimentos = movimentoDama(loc, vez)
         # elif peca == 'rei':
         #     lista_movimentos = movimentoRei(loc, vez)
         todos_movimentos.append(lista_movimentos)
@@ -268,6 +268,16 @@ def movimentoTorre(posicao, vez):
                 cadeia += 1
             else:
                 passagem_liberada = False
+    return lista_movimentos
+
+def movimentoDama(posicao, vez):
+    lista_movimentos = []
+    bispo = movimentoBispo(posicao, vez)
+    torre = lista_movimentos.append(movimentoTorre(posicao, vez))
+    for i in range(len(bispo)):
+        lista_movimentos.append(bispo[i])
+    for i in range(len(torre)):
+        lista_movimentos.append(torre[i])
     return lista_movimentos
 
 def movimentosValidos():
