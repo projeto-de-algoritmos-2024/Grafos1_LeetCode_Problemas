@@ -139,8 +139,52 @@ def desenharPecas():
             if peca_selecionada == i:
                 pygame.draw.rect(tela, 'violetred', [loc_pretas[i][0]*100, loc_pretas[i][1]*100, 100, 100], 5)
 
-def checkOp():
-    pass
+def checkOp(pecas, locs, vez):
+    lista_movimentos = []
+    todos_movimentos = []
+
+    for i in range((pecas)):
+        loc = locs
+        peca = peca[i]
+        if peca == 'peao':
+            lista_movimentos = movimentoPeao(loc, vez)
+        # elif peca == 'torre':
+        #     lista_movimentos = movimentoTorre(loc, vez)
+        # elif peca == 'cavalo':
+        #     lista_movimentos = movimentoCavalo(loc, vez)
+        # elif peca == 'bispo':
+        #     lista_movimentos = movimentoBispo(loc, vez)
+        # elif peca == 'dama':
+        #     lista_movimentos = movimentoDama(loc, vez)
+        # elif peca == 'rei':
+        #     lista_movimentos = movimentoRei(loc, vez)
+        todos_movimentos.append(lista_movimentos)
+
+    return todos_movimentos
+
+def movimentoPeao(posicao, vez):
+    lista_movimentos = []
+    if vez == 'b':
+        if (posicao[0], posicao[1] + 1) not in loc_brancas and (posicao[0], posicao[1] + 1) not in loc_pretas and posicao[1] < 7:
+           lista_movimentos.append((posicao[0], posicao[1] + 1))
+        if (posicao[0], posicao[1] + 2) not in loc_brancas and (posicao[0], posicao[1] + 2) not in loc_pretas and posicao[1] == 1:
+           lista_movimentos.append((posicao[0], posicao[1] + 2))
+        if (posicao[0] + 1, posicao[1] + 1) in loc_pretas:
+           lista_movimentos.append((posicao[0], posicao[1] + 1))
+        if (posicao[0] - 1, posicao[1] + 1) in loc_pretas:
+           lista_movimentos.append((posicao[0] -1, posicao[1] + 1))
+    else:
+        if (posicao[0], posicao[1] - 1) not in loc_brancas and (posicao[0], posicao[1] - 1) not in loc_pretas and posicao[1] > 0:
+           lista_movimentos.append((posicao[0], posicao[1] - 1))
+        if (posicao[0], posicao[1] - 2) not in loc_brancas and (posicao[0], posicao[1] - 2) not in loc_pretas and posicao[1] == 6:
+           lista_movimentos.append((posicao[0], posicao[1] - 2))
+        if (posicao[0] + 1, posicao[1] - 1) in loc_brancas:
+           lista_movimentos.append((posicao[0], posicao[1] - 1))
+        if (posicao[0] - 1, posicao[1] - 1) in loc_brancas:
+           lista_movimentos.append((posicao[0] -1, posicao[1] - 1))
+
+    return lista_movimentos
+
 
 # GAME LOOP
 run = True
