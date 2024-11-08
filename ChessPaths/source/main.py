@@ -309,6 +309,15 @@ def desenharMovimentosValidos(movimentos):
         pygame.draw.rect(tela, 'violetred', pygame.Rect(movimentos[i][0] * 100 + 40, movimentos[i][1] * 100 + 40, 20, 20)
 )
 
+def desenharCoordenadas():
+    n = 8
+    l = 'a'
+    for i in range(8):
+        tela.blit(fonte_grande.render(l, True, 'mediumpurple2'), (100 * i + 80, 771))
+        tela.blit(fonte_grande.render(str(n), True, 'mediumpurple2'), (3, 100 * i))
+        n -= 1
+        l = chr(ord(l) + 1)
+
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
 op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
@@ -318,6 +327,7 @@ while run:
     tela.fill('dark gray')
     desenharTabuleiro()
     desenharPecas()
+    desenharCoordenadas()
 
     if peca_selecionada != 100:
         movimentos_validos = movimentosValidos()
