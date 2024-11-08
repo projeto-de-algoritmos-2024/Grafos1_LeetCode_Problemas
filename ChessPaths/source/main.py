@@ -2,7 +2,7 @@ import pygame
 
 # CONFIGURAÇÕES DA TELA
 pygame.init()
-pygame.display.set_caption("ChessPaths")
+pygame.display.set_caption('ChessPaths')
 LARGURA_TELA = 1000
 ALTURA_TELA = 900
 tela = pygame.display.set_mode([LARGURA_TELA, ALTURA_TELA])
@@ -13,16 +13,16 @@ fps = 60
 
 # CONFIGURAÇÕES DO JOGO
 pecas_brancas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
-                 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
+                'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
 
 pecas_pretas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
                 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
 
 loc_pretas = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
-               (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
+                   (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
 
 loc_brancas = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
-              (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
+                   (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
 
 cap_brancas = []
 
@@ -30,7 +30,7 @@ cap_pretas = []
 
 turn_step = 0
 
-peca_selecionada = -1
+peca_selecionada = 100
 
 movimentos_validos = []
 
@@ -82,15 +82,15 @@ peao_branco   = pygame.image.load('assets/pieces/peao_branco.png')
 peao_branco   = pygame.transform.scale(peao_branco, (65, 65))
 peao_branco_p = pygame.transform.scale(peao_branco, (45, 45))
 
-imagens_brancas = [peao_branco, torre_branca, cavalo_branco, bispo_branco, dama_branca, rei_branco, bispo_branco, cavalo_branco, torre_branca]
+imagens_brancas = [peao_branco, dama_branca, rei_branco, cavalo_branco, torre_branca, bispo_branco]
 
-imagens_pretas = [peao_preto, torre_preta, cavalo_preto, bispo_preto, dama_preta, rei_preto, bispo_preto, cavalo_preto, torre_preta]
+imagens_pretas = [peao_preto, dama_preta, rei_preto, cavalo_preto, torre_preta, bispo_preto]
 
-imagens_brancas_p = [peao_branco_p, torre_branca_p, cavalo_branco_p, bispo_branco_p, dama_branca_p, rei_branco_p, bispo_branco_p, cavalo_branco_p, torre_branca_p]
+imagens_brancas_p = [peao_branco_p, dama_branca_p, rei_branco_p, cavalo_branco_p, torre_branca_p, bispo_branco_p]
 
-imagens_pretas_p = [peao_preto_p, torre_preta_p, cavalo_preto_p, bispo_preto_p, dama_preta_p, rei_preto_p, bispo_preto_p, cavalo_preto_p, torre_preta_p]
+imagens_pretas_p = [peao_preto_p, dama_preta_p, rei_preto_p, cavalo_preto_p, torre_preta_p, bispo_preto_p]
 
-lista_pecas = ['peao', 'torre', 'cavalo', 'bispo', 'dama', 'rei']
+lista_pecas = ['peao', 'dama', 'rei', 'cavalo', 'torre', 'bispo']
 
 # FUNÇÕES
 def desenharTabuleiro():
@@ -182,7 +182,7 @@ def movimentoPeao(posicao, vez):
            lista_movimentos.append((posicao[0] + 1, posicao[1] + 1))
         if (posicao[0] - 1, posicao[1] + 1) in loc_brancas:
            lista_movimentos.append((posicao[0] -1, posicao[1] + 1))
-
+    
     return lista_movimentos
 
 def movimentosValidos():
@@ -195,7 +195,7 @@ def movimentosValidos():
 
 def desenharMovimentosValidos(movimentos):
     for i in range(len(movimentos)):
-        pygame.draw.circle(tela, 'blue', (movimentos[i][0] * 100 + 50, movimentos[i][1] * 100 + 500), 5)
+        pygame.draw.circle(tela, 'blue', (movimentos[i][0] * 100 + 50, movimentos[i][1] * 100 + 50), 5)
 
 
 # GAME LOOP
@@ -208,53 +208,52 @@ while run:
     desenharTabuleiro()
     desenharPecas()
 
-    if peca_selecionada != -1:
+    if peca_selecionada != 100:
         movimentos_validos = movimentosValidos()
         desenharMovimentosValidos(movimentos_validos)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             x_coord = event.pos[0] // 100
             y_coord = event.pos[1] // 100
             click_coord = (x_coord, y_coord)
-
+            
             if turn_step < 2:
                 if click_coord in loc_brancas:
                     peca_selecionada = loc_brancas.index(click_coord)
                     if turn_step == 0:
                         turn_step = 1
-                if click_coord in movimentos_validos and peca_selecionada != -1:
+                if click_coord in movimentos_validos and peca_selecionada != 100:
                     loc_brancas[peca_selecionada] = click_coord
                     if click_coord in loc_pretas:
                         peca_preta = loc_pretas.index(click_coord)
                         cap_brancas.append(pecas_pretas[peca_preta])
                         pecas_pretas.pop(peca_preta)
                         loc_pretas.pop(peca_preta)
-                    op_brancas = checkOp(pecas_pretas, loc_pretas, 'p')
-                    op_pretas = checkOp(pecas_brancas, loc_brancas, 'b')
+                    op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
+                    op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 2
-                    peca_selecionada = -1
+                    peca_selecionada = 100
                     movimentos_validos = []
             if turn_step >= 2:
                 if click_coord in loc_pretas:
                     peca_selecionada = loc_pretas.index(click_coord)
                     if turn_step == 2:
                         turn_step = 3
-                if click_coord in movimentos_validos and peca_selecionada != -1:
+                if click_coord in movimentos_validos and peca_selecionada != 100:
                     loc_pretas[peca_selecionada] = click_coord
                     if click_coord in loc_brancas:
-                        pecas_brancas = loc_brancas.index(click_coord)
-                        cap_pretas.append(pecas_brancas[pecas_brancas])
-                        pecas_brancas.pop(pecas_brancas)
-                        loc_brancas.pop(pecas_brancas)
-                    op_pretas = checkOp(pecas_brancas, loc_brancas, 'b')
-                    op_brancas = checkOp(pecas_pretas, loc_pretas, 'p')
+                        peca_branca = loc_brancas.index(click_coord)
+                        cap_pretas.append(pecas_brancas[peca_branca])
+                        pecas_brancas.pop(peca_branca)
+                        loc_brancas.pop(peca_branca)
+                    op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
+                    op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 0
-                    peca_selecionada = -1
+                    peca_selecionada = 100
                     movimentos_validos = []
-
 
     pygame.display.flip()
 pygame.quit()
