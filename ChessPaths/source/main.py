@@ -30,7 +30,7 @@ cap_pretas = []
 
 turn_step = 0
 
-peca_selecionada = 10
+peca_selecionada = -1
 
 movimentos_validos = []
 
@@ -110,6 +110,12 @@ def desenharTabuleiro():
                             'Pretas: Selecione uma peça', 'Pretas: Selecione um destino']
         
         tela.blit(fonte_grande.render(textos_turn_step[turn_step], True, 'lightskyblue2'), (10, 810))
+        
+        if turn_step == 1:
+            tela.blit(fonte_grande.render(pecas_brancas[peca_selecionada], True, 'lightskyblue2'), (10, 840))
+        elif turn_step == 3:
+            tela.blit(fonte_grande.render(pecas_pretas[peca_selecionada], True, 'lightskyblue2'), (10, 840))
+
 
 def desenharPecas():
     for i in range(len(pecas_brancas)):
