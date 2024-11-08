@@ -127,7 +127,6 @@ def desenharPecas():
             if peca_selecionada == i:
                 pygame.draw.rect(tela, 'violetred', [loc_brancas[i][0]*100, loc_brancas[i][1]*100, 100, 100], 5)
 
-
     for i in range(len(pecas_pretas)):
         index = lista_pecas.index(pecas_pretas[i])
         if pecas_pretas[i] == 'peao':
@@ -155,8 +154,8 @@ def checkOp(pecas, locs, vez):
             lista_movimentos = movimentoTorre(loc, vez)
         elif peca == 'dama':
             lista_movimentos = movimentoDama(loc, vez)
-        # elif peca == 'rei':
-        #     lista_movimentos = movimentoRei(loc, vez)
+        elif peca == 'rei':
+            lista_movimentos = movimentoRei(loc, vez)
         todos_movimentos.append(lista_movimentos)
 
     return todos_movimentos
@@ -278,6 +277,23 @@ def movimentoDama(posicao, vez):
         lista_movimentos.append(bispo[i])
     for i in range(len(torre)):
         lista_movimentos.append(torre[i])
+    return lista_movimentos
+
+def movimentoRei(posicao, vez):
+    lista_movimentos = []
+    if vez == 'b':
+        # lista_inimigos = loc_pretas
+        lista_aliados = loc_brancas
+    else:
+        # lista_inimigos = loc_brancas
+        lista_aliados = loc_pretas
+
+    casas_possiveis = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
+    for i in range(8):
+        target = (posicao[0] + casas_possiveis[i][0], posicao[1] + casas_possiveis[i][1])
+        if target not in lista_aliados and 0 <= target[0] <= 7 and 0 <= target[1] <= 7:
+            lista_movimentos.append(target)
+
     return lista_movimentos
 
 def movimentosValidos():
