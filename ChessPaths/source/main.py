@@ -143,9 +143,9 @@ def checkOp(pecas, locs, vez):
     lista_movimentos = []
     todos_movimentos = []
 
-    for i in range((pecas)):
-        loc = locs
-        peca = peca[i]
+    for i in range((len(pecas))):
+        loc = locs[i]
+        peca = pecas[i]
         if peca == 'peao':
             lista_movimentos = movimentoPeao(loc, vez)
         # elif peca == 'torre':
@@ -174,7 +174,7 @@ def movimentoPeao(posicao, vez):
         if (posicao[0] - 1, posicao[1] + 1) in loc_pretas:
            lista_movimentos.append((posicao[0] -1, posicao[1] + 1))
     else:
-        if (posicao[0], posicao[1] - 1) not in loc_brancas and (posicao[0], posicao[1] - 1) not in loc_pretas and posicao[1] > 0:
+        if (posicao[0], posicao[1] - 1) not in loc_brancas and (posicao[0], posicao[1] - 1) not in loc_pretas and posicao[1] > 0: #####
            lista_movimentos.append((posicao[0], posicao[1] - 1))
         if (posicao[0], posicao[1] - 2) not in loc_brancas and (posicao[0], posicao[1] - 2) not in loc_pretas and posicao[1] == 6:
            lista_movimentos.append((posicao[0], posicao[1] - 2))
@@ -185,14 +185,32 @@ def movimentoPeao(posicao, vez):
 
     return lista_movimentos
 
+def movimentosValidos():
+    if turn_step < 2:
+        opcoes = op_brancas
+    else:
+        opcoes = op_pretas
+    opcoes_validas = opcoes[peca_selecionada]
+    return opcoes_validas
+
+def desenharMovimentosValidos(movimentos):
+    for i in range(len(movimentos)):
+        pygame.draw.circle(tela, 'blue', (movimentos[i][0] * 100 + 50, movimentos[i][1] * 100 + 500), 5)
+
 
 # GAME LOOP
+op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
+op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
 run = True
 while run:
     timer.tick(fps)
     tela.fill('dark gray')
     desenharTabuleiro()
     desenharPecas()
+
+    if peca_selecionada != -1:
+        movimentos_validos = movimentosValidos()
+        desenharMovimentosValidos(movimentos_validos)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
