@@ -147,12 +147,12 @@ def checkOp(pecas, locs, vez):
         peca = pecas[i]
         if peca == 'peao':
             lista_movimentos = movimentoPeao(loc, vez)
-        # elif peca == 'torre':
-        #     lista_movimentos = movimentoTorre(loc, vez)
         elif peca == 'cavalo':
             lista_movimentos = movimentoCavalo(loc, vez)
         elif peca == 'bispo':
             lista_movimentos = movimentoBispo(loc, vez)
+        elif peca == 'torre':
+            lista_movimentos = movimentoTorre(loc, vez)
         # elif peca == 'dama':
         #     lista_movimentos = movimentoDama(loc, vez)
         # elif peca == 'rei':
@@ -187,10 +187,10 @@ def movimentoPeao(posicao, vez):
 def movimentoCavalo(posicao, vez):
     lista_movimentos = []
     if vez == 'b':
-        lista_inimigos = loc_pretas
+        # lista_inimigos = loc_pretas
         lista_aliados = loc_brancas
     else:
-        lista_inimigos = loc_brancas
+        # lista_inimigos = loc_brancas
         lista_aliados = loc_pretas
 
     casas_possiveis = [(1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1)]
@@ -235,6 +235,39 @@ def movimentoBispo(posicao, vez):
             else:
                 passagem_liberada = False
     
+    return lista_movimentos
+
+def movimentoTorre(posicao, vez):
+    lista_movimentos = []
+    if vez == 'b':
+        lista_inimigos = loc_pretas
+        lista_aliados = loc_brancas
+    else:
+        lista_inimigos = loc_brancas
+        lista_aliados = loc_pretas
+    for i in range(4):
+        passagem_liberada = True
+        cadeia = 1
+        if i == 0:
+            x = 0
+            y = 1
+        elif i == 1:
+            x = 0
+            y = -1
+        elif i == 2:
+            x = 1
+            y = 0
+        else:
+            x = -1
+            y = 0
+        while passagem_liberada:
+            if (posicao[0] + (cadeia*x), posicao[1] + (cadeia*y)) not in lista_aliados and 0 <= posicao[0] + (cadeia*x) <= 7 and 0 <= posicao[1] + (cadeia*y) <= 7:
+                lista_movimentos.append((posicao[0] + (cadeia * x), posicao[1] + (cadeia * y)))
+                if (posicao[0] + (cadeia * x), posicao[1] + (cadeia * y)) in lista_inimigos:
+                    passagem_liberada = False
+                cadeia += 1
+            else:
+                passagem_liberada = False
     return lista_movimentos
 
 def movimentosValidos():
