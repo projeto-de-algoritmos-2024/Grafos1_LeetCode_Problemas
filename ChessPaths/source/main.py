@@ -273,7 +273,7 @@ def movimentoTorre(posicao, vez):
 def movimentoDama(posicao, vez):
     lista_movimentos = []
     bispo = movimentoBispo(posicao, vez)
-    torre = lista_movimentos.append(movimentoTorre(posicao, vez))
+    torre = movimentoTorre(posicao, vez)
     for i in range(len(bispo)):
         lista_movimentos.append(bispo[i])
     for i in range(len(torre)):
