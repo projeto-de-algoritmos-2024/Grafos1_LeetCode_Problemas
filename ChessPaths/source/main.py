@@ -343,9 +343,11 @@ def desenharCheque():
                         pygame.draw.rect(tela, 'red', [loc_pretas[index_rei][0]*100, loc_pretas[index_rei][1]*100, 100, 100], 5)
 
 def desenharGameOver():
-    pygame.draw.rect(tela, 'black', [200, 200, 400, 70])
-    tela.blit(fonte.render(f'{vencedor} won the game!', True, 'white'), (210, 210))
-    tela.blit(fonte.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
+    pygame.draw.rect(tela, 'black', [200, 200, 400, 200])
+    tela.blit(fonte_grande.render(f'{vencedor} VENCERAM!', True, 'white'), (260, 210))
+    tela.blit(fonte_grande.render(f'Pressione', True, 'white'), (325, 240))
+    tela.blit(fonte_grande.render(f'ENTER', True, 'green'), (360, 270))
+    tela.blit(fonte_grande.render(f'Para jogar novamente!', True, 'white'), (225, 300))
 
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
@@ -386,7 +388,7 @@ while run:
                         peca_preta = loc_pretas.index(click_coord)
                         cap_brancas.append(pecas_pretas[peca_preta])
                         if pecas_pretas[peca_preta] == 'rei':
-                            vencedor = 'b'
+                            vencedor = 'BRANCAS'
                         pecas_pretas.pop(peca_preta)
                         loc_pretas.pop(peca_preta)
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
@@ -405,7 +407,7 @@ while run:
                         peca_branca = loc_brancas.index(click_coord)
                         cap_pretas.append(pecas_brancas[peca_branca])
                         if pecas_brancas[peca_branca] == 'rei':
-                            vencedor = 'p'
+                            vencedor = 'PRETAS'
                         pecas_brancas.pop(peca_branca)
                         loc_brancas.pop(peca_branca)
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
