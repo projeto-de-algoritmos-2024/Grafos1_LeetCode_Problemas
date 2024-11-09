@@ -92,6 +92,8 @@ imagens_pretas_p = [peao_preto_p, dama_preta_p, rei_preto_p, cavalo_preto_p, tor
 
 lista_pecas = ['peao', 'dama', 'rei', 'cavalo', 'torre', 'bispo']
 
+clock = 0
+
 # FUNÇÕES
 def desenharTabuleiro():
     pygame.draw.rect(tela, 'purple4', [0, 0, 800, 800])
@@ -318,15 +320,38 @@ def desenharCoordenadas():
         n -= 1
         l = chr(ord(l) + 1)
 
+def desenharCheque():
+    if turn_step < 2:
+        if 'rei' in pecas_brancas:
+            index_rei = pecas_brancas.index('rei')
+            loc_rei = loc_brancas[index_rei]
+            for i in range(len(op_pretas)):
+                if loc_rei in op_pretas[i]:
+                    if clock < 15:
+                        pygame.draw.rect(tela, 'red', [loc_brancas[index_rei][0]*100, loc_brancas[index_rei][1]*100, 100, 100], 5)
+    else:
+        if 'rei' in pecas_pretas:
+            index_rei = pecas_pretas.index('rei')
+            loc_rei = loc_pretas[index_rei]
+            for i in range(len(op_brancas)):
+                if loc_rei in op_brancas[i]:
+                    if clock < 15:
+                        pygame.draw.rect(tela, 'red', [loc_pretas[index_rei][0]*100, loc_pretas[index_rei][1]*100, 100, 100], 5)
+
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
 op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
 run = True
 while run:
     timer.tick(fps)
+    if clock < 30:
+        clock += 1
+    else:
+        clock = 0
     tela.fill('dark gray')
     desenharTabuleiro()
     desenharPecas()
+    desenharCheque()
     desenharCoordenadas()
 
     if peca_selecionada != 100:
