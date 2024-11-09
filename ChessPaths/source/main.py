@@ -1,4 +1,5 @@
 import pygame
+import grafoEL
 
 # CONFIGURAÇÕES DA TELA
 pygame.init()
@@ -359,6 +360,19 @@ def desenharCapturadas():
         index = lista_pecas.index(captured_piece)
         tela.blit(imagens_brancas_p[index], (925, 5+50*i))
 
+def desenharCaminhoCavalo(caminho):
+    for i, movimento in enumerate(caminho):
+        if i == 0:
+            tela.blit(fonte_grande.render('Caminho:', True, 'white'), (10, 870))
+            continue
+        
+        pygame.draw.rect(tela, 'darkslategray4', pygame.Rect(movimento[1] * 100 + 40, movimento[0] * 100 + 40, 20, 20))
+        coordenada = grafoEL.coordenadaParaCasa(movimento[1], movimento[0])
+
+        pos_texto_x = i*100+100
+        pos_texto_y = 870
+        tela.blit(fonte_grande.render(coordenada, True, 'white'), (pos_texto_x, pos_texto_y))
+
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
 op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
@@ -375,6 +389,7 @@ while run:
     desenharCapturadas()
     desenharCheque()
     desenharCoordenadas()
+    desenharCaminhoCavalo(grafoEL.caminho_convertido)
 
     if peca_selecionada != 100:
         movimentos_validos = movimentosValidos()
@@ -462,3 +477,4 @@ while run:
 
     pygame.display.flip()
 pygame.quit()
+## ESTAVEL
