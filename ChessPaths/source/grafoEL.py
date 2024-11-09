@@ -74,15 +74,15 @@ def caminhoMinimo(cavalo_inicial, cavalo_destino, grafo):
     return None  #Caso não haja caminho válido
 
 #TESTE TERMINAL:
-cavalo_inicial = (7, 6)
-cavalo_destino = (3, 7)  
+# cavalo_inicial = (7, 6)
+# cavalo_destino = (3, 7)  
 
 #Monta o grafo com as possíveis jogadas do cavalo
-for x in range(8):
-    for y in range(8):
-        montarUmaJogada(x, y, grafo)
+# for x in range(8):
+#     for y in range(8):
+#         montarUmaJogada(x, y, grafo)
 
-caminho = caminhoMinimo(cavalo_inicial, cavalo_destino, grafo)
+# caminho = caminhoMinimo(cavalo_inicial, cavalo_destino, grafo)
 
-caminho_convertido = [(pos // 8, pos % 8) for pos in caminho]
-print(caminho_convertido)
+# caminho_convertido = [(pos // 8, pos % 8) for pos in caminho]
+# print(caminho_convertido)

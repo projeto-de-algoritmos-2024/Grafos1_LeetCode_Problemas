@@ -35,8 +35,10 @@ peca_selecionada = 100
 
 cavalo_selecionado = False
 mostrar_caminho = False
-cavalo_pos_xy = (-1,-1)
-cavalo_dtn_xy = (-1,-1)
+cavalo_pos_xy = (0,0)
+cavalo_dtn_xy = (0,0)
+caminho = []
+caminho_convertido = []
 
 movimentos_validos = []
 
@@ -375,8 +377,8 @@ def desenharCaminhoCavalo(caminho):
             tela.blit(fonte_grande.render('Caminho:', True, 'white'), (10, 870))
             continue
         
-        pygame.draw.rect(tela, 'darkslategray4', pygame.Rect(movimento[1] * 100 + 40, movimento[0] * 100 + 40, 20, 20))
-        coordenada = grafoEL.coordenadaParaCasa(movimento[1], movimento[0])
+        pygame.draw.rect(tela, 'darkslategray4', pygame.Rect(movimento[0] * 100 + 40, movimento[1] * 100 + 40, 20, 20))
+        coordenada = grafoEL.coordenadaParaCasa(movimento[0], movimento[1])
 
         pos_texto_x = i*100+100
         pos_texto_y = 870
@@ -398,12 +400,13 @@ while run:
     desenharCapturadas()
     desenharCheque()
     desenharCoordenadas()
-    if cavalo_selecionado and mostrar_caminho:
-        desenharCaminhoCavalo(grafoEL.caminho_convertido)
 
     if peca_selecionada != 100:
         movimentos_validos = movimentosValidos()
         desenharMovimentosValidos(movimentos_validos)
+
+    if cavalo_selecionado and mostrar_caminho:
+        desenharCaminhoCavalo(caminho_convertido)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -412,18 +415,29 @@ while run:
             x_coord = event.pos[0] // 100
             y_coord = event.pos[1] // 100
             click_coord = (x_coord, y_coord)
-            print(x_coord, y_coord)
             if turn_step < 2:
                 if click_coord == (8, 8):
                     mostrar_caminho = not mostrar_caminho
                 if click_coord in loc_brancas:
+                    cavalo_pos_xy = click_coord
                     peca_selecionada = loc_brancas.index(click_coord)
                     if pecas_brancas[peca_selecionada] == 'cavalo' and not cavalo_selecionado:
                         cavalo_selecionado = True
+                        cavalo_pos_xy = click_coord
+                        for x in range(8):
+                            for y in range(8):
+                                grafoEL.montarUmaJogada(x, y, grafoEL.grafo)
                     elif pecas_brancas[peca_selecionada] != 'cavalo':
                         cavalo_selecionado = False
                     if turn_step == 0:
                         turn_step = 1
+                if click_coord not in movimentos_validos and click_coord not in loc_brancas and cavalo_selecionado and mostrar_caminho:
+                    cavalo_dtn_xy = click_coord
+                    print(f"CAVALO BRANCO POS: {cavalo_pos_xy}")
+                    print(f"CAVALO BRANCO DEST: {cavalo_dtn_xy}")
+                    caminho = grafoEL.caminhoMinimo(cavalo_pos_xy, cavalo_dtn_xy, grafoEL.grafo)
+                    if caminho is not None:
+                        caminho_convertido = [(pos // 8, pos % 8) for pos in caminho]
                 if click_coord in movimentos_validos and peca_selecionada != 100:
                     loc_brancas[peca_selecionada] = click_coord
                     if click_coord in loc_pretas:
@@ -437,19 +451,31 @@ while run:
                     op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 2
                     mostrar_caminho = False
+                    caminho = []
+                    caminho_convertido = []
                     peca_selecionada = 100
                     movimentos_validos = []
             if turn_step >= 2:
                 if click_coord == (8, 8):
                     mostrar_caminho = not mostrar_caminho
                 if click_coord in loc_pretas:
+                    cavalo_pos_xy = click_coord
                     peca_selecionada = loc_pretas.index(click_coord)
                     if pecas_pretas[peca_selecionada] == 'cavalo' and not cavalo_selecionado:
                         cavalo_selecionado = True
+                        cavalo_pos_xy = click_coord
+                        for x in range(8):
+                            for y in range(8):
+                                grafoEL.montarUmaJogada(x, y, grafoEL.grafo)
                     elif pecas_pretas[peca_selecionada] != 'cavalo':
                         cavalo_selecionado = False
                     if turn_step == 2:
                         turn_step = 3
+                if click_coord not in movimentos_validos and click_coord not in loc_pretas and cavalo_selecionado and mostrar_caminho:
+                    cavalo_dtn_xy = click_coord
+                    caminho = grafoEL.caminhoMinimo(cavalo_pos_xy, cavalo_dtn_xy, grafoEL.grafo)
+                    if caminho is not None:
+                        caminho_convertido = [(pos // 8, pos % 8) for pos in caminho]
                 if click_coord in movimentos_validos and peca_selecionada != 100:
                     loc_pretas[peca_selecionada] = click_coord
                     if click_coord in loc_brancas:
@@ -463,6 +489,8 @@ while run:
                     op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 0
                     mostrar_caminho = False
+                    caminho = []
+                    caminho_convertido = []
                     peca_selecionada = 100
                     movimentos_validos = []
         if event.type == pygame.KEYDOWN and game_over:
