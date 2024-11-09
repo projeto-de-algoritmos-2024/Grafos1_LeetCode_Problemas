@@ -349,6 +349,16 @@ def desenharGameOver():
     tela.blit(fonte_grande.render(f'ENTER', True, 'green'), (360, 270))
     tela.blit(fonte_grande.render(f'Para jogar novamente!', True, 'white'), (225, 300))
 
+def desenharCapturadas():
+    for i in range(len(cap_brancas)):
+        captured_piece = cap_brancas[i]
+        index = lista_pecas.index(captured_piece)
+        tela.blit(imagens_pretas_p[index], (825, 5+50*i))
+    for i in range(len(cap_pretas)):
+        captured_piece = cap_pretas[i]
+        index = lista_pecas.index(captured_piece)
+        tela.blit(imagens_brancas_p[index], (925, 5+50*i))
+
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
 op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
@@ -362,6 +372,7 @@ while run:
     tela.fill('dark gray')
     desenharTabuleiro()
     desenharPecas()
+    desenharCapturadas()
     desenharCheque()
     desenharCoordenadas()
 
