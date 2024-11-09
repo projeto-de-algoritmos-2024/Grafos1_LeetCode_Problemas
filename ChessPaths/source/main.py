@@ -33,7 +33,10 @@ turn_step = 0
 
 peca_selecionada = 100
 
-mostrarCaminho = False
+cavalo_selecionado = False
+mostrar_caminho = False
+cavalo_pos_xy = (-1,-1)
+cavalo_dtn_xy = (-1,-1)
 
 movimentos_validos = []
 
@@ -124,6 +127,10 @@ def desenharTabuleiro():
             tela.blit(fonte_grande.render(pecas_brancas[peca_selecionada], True, 'lightskyblue2'), (10, 840))
         elif turn_step == 3:
             tela.blit(fonte_grande.render(pecas_pretas[peca_selecionada], True, 'lightskyblue2'), (10, 840))
+        
+        pygame.draw.rect(tela, 'gray20', [805, 805, 66, 66])
+        pygame.draw.rect(tela, 'blue', [810, 810, 55, 55])
+        tela.blit(fonte_grande.render('AMC', True, 'yellow'), (814, 820))
 
 def desenharPecas():
     for i in range(len(pecas_brancas)):
@@ -391,7 +398,7 @@ while run:
     desenharCapturadas()
     desenharCheque()
     desenharCoordenadas()
-    if mostrarCaminho:
+    if cavalo_selecionado and mostrar_caminho:
         desenharCaminhoCavalo(grafoEL.caminho_convertido)
 
     if peca_selecionada != 100:
@@ -405,14 +412,16 @@ while run:
             x_coord = event.pos[0] // 100
             y_coord = event.pos[1] // 100
             click_coord = (x_coord, y_coord)
-            
+            print(x_coord, y_coord)
             if turn_step < 2:
+                if click_coord == (8, 8):
+                    mostrar_caminho = not mostrar_caminho
                 if click_coord in loc_brancas:
                     peca_selecionada = loc_brancas.index(click_coord)
-                    if pecas_brancas[peca_selecionada] == 'cavalo' and not mostrarCaminho:
-                        mostrarCaminho = True
-                    else:
-                        mostrarCaminho = False
+                    if pecas_brancas[peca_selecionada] == 'cavalo' and not cavalo_selecionado:
+                        cavalo_selecionado = True
+                    elif pecas_brancas[peca_selecionada] != 'cavalo':
+                        cavalo_selecionado = False
                     if turn_step == 0:
                         turn_step = 1
                 if click_coord in movimentos_validos and peca_selecionada != 100:
@@ -427,11 +436,18 @@ while run:
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
                     op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 2
+                    mostrar_caminho = False
                     peca_selecionada = 100
                     movimentos_validos = []
             if turn_step >= 2:
+                if click_coord == (8, 8):
+                    mostrar_caminho = not mostrar_caminho
                 if click_coord in loc_pretas:
                     peca_selecionada = loc_pretas.index(click_coord)
+                    if pecas_pretas[peca_selecionada] == 'cavalo' and not cavalo_selecionado:
+                        cavalo_selecionado = True
+                    elif pecas_pretas[peca_selecionada] != 'cavalo':
+                        cavalo_selecionado = False
                     if turn_step == 2:
                         turn_step = 3
                 if click_coord in movimentos_validos and peca_selecionada != 100:
@@ -446,6 +462,7 @@ while run:
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
                     op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
                     turn_step = 0
+                    mostrar_caminho = False
                     peca_selecionada = 100
                     movimentos_validos = []
         if event.type == pygame.KEYDOWN and game_over:
@@ -471,6 +488,9 @@ while run:
                 turn_step = 0
 
                 peca_selecionada = 100
+
+                cavalo_selecionado = False
+                mostrar_caminho = False
 
                 movimentos_validos = []
 
