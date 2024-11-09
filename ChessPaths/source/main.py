@@ -94,6 +94,10 @@ lista_pecas = ['peao', 'dama', 'rei', 'cavalo', 'torre', 'bispo']
 
 clock = 0
 
+vencedor = ''
+
+game_over = False
+
 # FUNÇÕES
 def desenharTabuleiro():
     pygame.draw.rect(tela, 'purple4', [0, 0, 800, 800])
@@ -338,6 +342,11 @@ def desenharCheque():
                     if clock < 15:
                         pygame.draw.rect(tela, 'red', [loc_pretas[index_rei][0]*100, loc_pretas[index_rei][1]*100, 100, 100], 5)
 
+def desenharGameOver():
+    pygame.draw.rect(tela, 'black', [200, 200, 400, 70])
+    tela.blit(fonte.render(f'{vencedor} won the game!', True, 'white'), (210, 210))
+    tela.blit(fonte.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
+
 # GAME LOOP
 op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
 op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
@@ -361,7 +370,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not game_over:
             x_coord = event.pos[0] // 100
             y_coord = event.pos[1] // 100
             click_coord = (x_coord, y_coord)
@@ -376,6 +385,8 @@ while run:
                     if click_coord in loc_pretas:
                         peca_preta = loc_pretas.index(click_coord)
                         cap_brancas.append(pecas_pretas[peca_preta])
+                        if pecas_pretas[peca_preta] == 'rei':
+                            vencedor = 'b'
                         pecas_pretas.pop(peca_preta)
                         loc_pretas.pop(peca_preta)
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
@@ -393,6 +404,8 @@ while run:
                     if click_coord in loc_brancas:
                         peca_branca = loc_brancas.index(click_coord)
                         cap_pretas.append(pecas_brancas[peca_branca])
+                        if pecas_brancas[peca_branca] == 'rei':
+                            vencedor = 'p'
                         pecas_brancas.pop(peca_branca)
                         loc_brancas.pop(peca_branca)
                     op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
@@ -400,6 +413,39 @@ while run:
                     turn_step = 0
                     peca_selecionada = 100
                     movimentos_validos = []
+
+        if event.type == pygame.KEYDOWN and game_over:
+            if event.key == pygame.K_RETURN:
+                game_over = False
+                vencedor = ''
+                pecas_brancas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
+                'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
+
+                pecas_pretas = ['torre', 'cavalo', 'bispo', 'dama', 'rei', 'bispo', 'cavalo', 'torre',
+                'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao', 'peao']
+
+                loc_pretas = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
+                   (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
+
+                loc_brancas = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
+                   (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
+
+                cap_brancas = []
+
+                cap_pretas = []
+
+                turn_step = 0
+
+                peca_selecionada = 100
+
+                movimentos_validos = []
+
+                op_pretas = checkOp(pecas_pretas, loc_pretas, 'p')
+                op_brancas = checkOp(pecas_brancas, loc_brancas, 'b')
+
+    if vencedor != '':
+        game_over = True
+        desenharGameOver()
 
     pygame.display.flip()
 pygame.quit()
