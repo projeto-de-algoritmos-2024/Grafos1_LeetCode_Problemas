@@ -204,10 +204,8 @@ def movimentoPeao(posicao, vez):
 def movimentoCavalo(posicao, vez):
     lista_movimentos = []
     if vez == 'b':
-        # lista_inimigos = loc_pretas
         lista_aliados = loc_brancas
     else:
-        # lista_inimigos = loc_brancas
         lista_aliados = loc_pretas
 
     casas_possiveis = [(1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1)]
@@ -300,10 +298,8 @@ def movimentoDama(posicao, vez):
 def movimentoRei(posicao, vez):
     lista_movimentos = []
     if vez == 'b':
-        # lista_inimigos = loc_pretas
         lista_aliados = loc_brancas
     else:
-        # lista_inimigos = loc_brancas
         lista_aliados = loc_pretas
 
     casas_possiveis = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
@@ -531,4 +527,3 @@ while run:
 
     pygame.display.flip()
 pygame.quit()
-## ESTAVEL
