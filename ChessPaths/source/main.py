@@ -33,6 +33,8 @@ turn_step = 0
 
 peca_selecionada = 100
 
+mostrarCaminho = False
+
 movimentos_validos = []
 
 rei_preto   = pygame.image.load('ChessPaths/assets/pieces/rei_preto.png')
@@ -389,7 +391,8 @@ while run:
     desenharCapturadas()
     desenharCheque()
     desenharCoordenadas()
-    desenharCaminhoCavalo(grafoEL.caminho_convertido)
+    if mostrarCaminho:
+        desenharCaminhoCavalo(grafoEL.caminho_convertido)
 
     if peca_selecionada != 100:
         movimentos_validos = movimentosValidos()
@@ -406,6 +409,10 @@ while run:
             if turn_step < 2:
                 if click_coord in loc_brancas:
                     peca_selecionada = loc_brancas.index(click_coord)
+                    if pecas_brancas[peca_selecionada] == 'cavalo' and not mostrarCaminho:
+                        mostrarCaminho = True
+                    else:
+                        mostrarCaminho = False
                     if turn_step == 0:
                         turn_step = 1
                 if click_coord in movimentos_validos and peca_selecionada != 100:
@@ -441,7 +448,6 @@ while run:
                     turn_step = 0
                     peca_selecionada = 100
                     movimentos_validos = []
-
         if event.type == pygame.KEYDOWN and game_over:
             if event.key == pygame.K_RETURN:
                 game_over = False
