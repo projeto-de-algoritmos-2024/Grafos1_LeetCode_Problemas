@@ -25,7 +25,10 @@ Os exercícios abordados são os seguintes
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: C++ e Python
+**Linguagem**: C, C++ e Python
+
+## Apresentação
+[Link para a apresentação:](https://youtu.be/HSoFKobdiZM)
 
 ## Uso 
 Para testar os códigos, basta entrar na plataforma [LeetCode](https://leetcode.com/), procurar pelos exercícios e colar na aba Code.
